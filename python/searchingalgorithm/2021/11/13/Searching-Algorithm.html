@@ -249,8 +249,8 @@ window.onload = wrap_img;
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 6.68 s, sys: 16.2 ms, total: 6.7 s
-Wall time: 6.71 s
+<pre>CPU times: user 6.65 s, sys: 18.8 ms, total: 6.67 s
+Wall time: 6.69 s
 </pre>
 </div>
 </div>
@@ -356,8 +356,8 @@ Wall time: 6.71 s
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 3.68 ms, sys: 558 µs, total: 4.24 ms
-Wall time: 4.25 ms
+<pre>CPU times: user 4.49 ms, sys: 1.07 ms, total: 5.56 ms
+Wall time: 5.3 ms
 </pre>
 </div>
 </div>
@@ -443,6 +443,11 @@ Wall time: 4.25 ms
             <span class="k">return</span> <span class="n">index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">[</span><span class="n">index</span><span class="p">:])</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">pop_min_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No frontier left.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 </pre></div>
 
     </div>
@@ -469,24 +474,22 @@ Wall time: 4.25 ms
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">uniform_search</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">explored</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">frontier</span> <span class="o">=</span> <span class="n">UniformSearchFrontier</span><span class="p">()</span>
-    <span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># init state</span>
-    <span class="n">tot_cost</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">frontier</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;start&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">pop_min_item</span><span class="p">()</span>
+        <span class="n">explored</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">tot_cost</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">problem</span><span class="o">.</span><span class="n">is_end</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">break</span>
         <span class="k">for</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="n">problem</span><span class="o">.</span><span class="n">succ_and_cost</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">new_state</span> <span class="ow">in</span> <span class="n">explored</span><span class="p">:</span>
                 <span class="k">continue</span>
             <span class="n">frontier</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">+</span> <span class="n">cost</span><span class="p">)</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">frontier</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
-            <span class="k">break</span>
-        <span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
-        <span class="n">explored</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">tot_cost</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
         
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">goal</span>
     <span class="k">while</span> <span class="n">explored</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
         <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
         <span class="n">s</span> <span class="o">=</span> <span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-        
     <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 
@@ -519,8 +522,8 @@ Wall time: 4.25 ms
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 40.4 ms, sys: 1.62 ms, total: 42 ms
-Wall time: 40.8 ms
+<pre>CPU times: user 37.4 ms, sys: 1.72 ms, total: 39.1 ms
+Wall time: 37.9 ms
 </pre>
 </div>
 </div>
@@ -543,7 +546,8 @@ Wall time: 40.8 ms
  (&#39;walk&#39;, 7, 5),
  (&#39;tram&#39;, 6, 4),
  (&#39;walk&#39;, 3, 2),
- (&#39;walk&#39;, 2, 1)]</pre>
+ (&#39;walk&#39;, 2, 1),
+ (&#39;start&#39;, 1, 0)]</pre>
 </div>
 
 </div>
@@ -583,8 +587,8 @@ Wall time: 40.8 ms
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 5min 28s, sys: 1.54 s, total: 5min 30s
-Wall time: 5min 30s
+<pre>CPU times: user 2min 51s, sys: 1.35 s, total: 2min 52s
+Wall time: 2min 53s
 </pre>
 </div>
 </div>
@@ -614,7 +618,8 @@ Wall time: 5min 30s
  (&#39;tram&#39;, 12, 6),
  (&#39;tram&#39;, 6, 4),
  (&#39;walk&#39;, 3, 2),
- (&#39;walk&#39;, 2, 1)]</pre>
+ (&#39;walk&#39;, 2, 1),
+ (&#39;start&#39;, 1, 0)]</pre>
 </div>
 
 </div>
@@ -625,6 +630,16 @@ Wall time: 5min 30s
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>reference:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=aIsgJJYrlXk&amp;ab_channel=stanfordonline">Stanford CS221: AI (Autumn 2019)</a></li>
+</ul>
+
+</div>
+</div>
+</div>
 </div>
 
 
