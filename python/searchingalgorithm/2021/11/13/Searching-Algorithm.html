@@ -77,7 +77,7 @@ window.onload = wrap_img;
        • <span class="read-time" title="Estimated read time">
     
     
-      2 min read
+      4 min read
     
 </span></p>
 
@@ -127,23 +127,17 @@ window.onload = wrap_img;
 
 <div class="container" id="notebook-container">
         
-    
-    
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
-</pre></div>
-
-    </div>
-</div>
-</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Defining-a-searching-problem">Defining a searching problem<a class="anchor-link" href="#Defining-a-searching-problem"> </a></h3><ul>
+<li>can either "walk" or "tram" on each state</li>
+<li>when choose "walk", count add 1 and cost add 1</li>
+<li>when choose "tram", count multiply by 2 and cost add 2</li>
+</ul>
 
 </div>
-    
-
+</div>
+</div>
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -177,6 +171,29 @@ window.onload = wrap_img;
 </div>
     
 
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="recursion-method---brute-force">recursion method - brute force<a class="anchor-link" href="#recursion-method---brute-force"> </a></h3>
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
     
     
 <div class="cell border-box-sizing code_cell rendered">
@@ -186,7 +203,7 @@ window.onload = wrap_img;
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">recursion</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>
+        <span class="s1">&#39;cost&#39;</span><span class="p">:</span> <span class="n">math</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span>    <span class="c1"># we can also use a very large number (1,000,000 for example) instead</span>
         <span class="s1">&#39;history&#39;</span><span class="p">:</span> <span class="p">[]</span>
     <span class="p">}</span>
     <span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">history</span><span class="p">,</span> <span class="n">total_cost</span><span class="p">):</span>
@@ -232,8 +249,8 @@ window.onload = wrap_img;
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 6.5 s, sys: 10.9 ms, total: 6.51 s
-Wall time: 6.52 s
+<pre>CPU times: user 6.68 s, sys: 16.2 ms, total: 6.7 s
+Wall time: 6.71 s
 </pre>
 </div>
 </div>
@@ -265,7 +282,14 @@ Wall time: 6.52 s
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="takes-more-than-6-seconds-for-200!-Can-we-do-better?">takes more than 6 seconds for 200! Can we do better?<a class="anchor-link" href="#takes-more-than-6-seconds-for-200!-Can-we-do-better?"> </a></h3>
+<p>It takes more than 6 seconds to search for best path towards 200...</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Dynamic-programming">Dynamic programming<a class="anchor-link" href="#Dynamic-programming"> </a></h3>
 </div>
 </div>
 </div>
@@ -332,8 +356,8 @@ Wall time: 6.52 s
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 4.78 ms, sys: 756 µs, total: 5.54 ms
-Wall time: 5.51 ms
+<pre>CPU times: user 3.68 ms, sys: 558 µs, total: 4.24 ms
+Wall time: 4.25 ms
 </pre>
 </div>
 </div>
@@ -370,10 +394,237 @@ Wall time: 5.51 ms
 
 <div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="and-now-it-takes-less-than-9-ms-for-1000">and now it takes less than 9 ms for 1000<a class="anchor-link" href="#and-now-it-takes-less-than-9-ms-for-1000"> </a></h3>
+<p>much faster. But will exceed the recursion limit when search up to 10,000</p>
+
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Uniform-search">Uniform search<a class="anchor-link" href="#Uniform-search"> </a></h3><p>Define data structure to store the frontier and explored nodes</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">UniformSearchFrontier</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="p">[]</span>
+        
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
+        <span class="n">new_frontier</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">ns</span> <span class="o">!=</span> <span class="n">new_state</span><span class="p">:</span>
+                <span class="n">new_frontier</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">cost</span><span class="p">:</span>    <span class="c1"># if cost is larger than the cost already in frontier =&gt; do nothing</span>
+                <span class="k">return</span> 
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="n">new_frontier</span>
+
+        <span class="c1"># else pop the state from original frontier and insert new state</span>
+        <span class="n">cost_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">]</span>
+        <span class="n">insert_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">cost_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">[:</span><span class="n">insert_pos</span><span class="p">]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">)]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">[</span><span class="n">insert_pos</span><span class="p">:]</span>
+
+    <span class="k">def</span> <span class="nf">find_insert_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">):</span>    <span class="c1"># binary search pos</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">sorted_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cost</span> <span class="k">else</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">sorted_list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">cost</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">[</span><span class="n">index</span><span class="p">:])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>With the frontier data structure defined, the rest is quite straight forward.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="k">def</span> <span class="nf">uniform_search</span><span class="p">(</span><span class="n">problem</span><span class="p">):</span>
+    <span class="n">explored</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">frontier</span> <span class="o">=</span> <span class="n">UniformSearchFrontier</span><span class="p">()</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="mi">1</span>   <span class="c1"># init state</span>
+    <span class="n">tot_cost</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span> <span class="ow">in</span> <span class="n">problem</span><span class="o">.</span><span class="n">succ_and_cost</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">new_state</span> <span class="ow">in</span> <span class="n">explored</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">frontier</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">+</span> <span class="n">cost</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">frontier</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">=</span> <span class="n">frontier</span><span class="o">.</span><span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
+        <span class="n">explored</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">tot_cost</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">goal</span>
+    <span class="k">while</span> <span class="n">explored</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">2</span><span class="p">],</span> <span class="n">s</span><span class="p">,</span> <span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">explored</span><span class="p">[</span><span class="n">s</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        
+    <span class="k">return</span> <span class="n">result</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">game</span> <span class="o">=</span> <span class="n">CountGame</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+<span class="n">uniform_search</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>CPU times: user 40.4 ms, sys: 1.62 ms, total: 42 ms
+Wall time: 40.8 ms
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;tram&#39;, 1000, 22),
+ (&#39;tram&#39;, 500, 20),
+ (&#39;tram&#39;, 250, 18),
+ (&#39;walk&#39;, 125, 16),
+ (&#39;tram&#39;, 124, 15),
+ (&#39;tram&#39;, 62, 13),
+ (&#39;walk&#39;, 31, 11),
+ (&#39;tram&#39;, 30, 10),
+ (&#39;walk&#39;, 15, 8),
+ (&#39;tram&#39;, 14, 7),
+ (&#39;walk&#39;, 7, 5),
+ (&#39;tram&#39;, 6, 4),
+ (&#39;walk&#39;, 3, 2),
+ (&#39;walk&#39;, 2, 1)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In this case uniform search is not restricted by recursion limit.</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%time</span>
+<span class="n">game</span> <span class="o">=</span> <span class="n">CountGame</span><span class="p">(</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">uniform_search</span><span class="p">(</span><span class="n">game</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>CPU times: user 5min 28s, sys: 1.54 s, total: 5min 30s
+Wall time: 5min 30s
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[(&#39;tram&#39;, 100000, 36),
+ (&#39;tram&#39;, 50000, 34),
+ (&#39;tram&#39;, 25000, 32),
+ (&#39;tram&#39;, 12500, 30),
+ (&#39;tram&#39;, 6250, 28),
+ (&#39;walk&#39;, 3125, 26),
+ (&#39;tram&#39;, 3124, 25),
+ (&#39;tram&#39;, 1562, 23),
+ (&#39;walk&#39;, 781, 21),
+ (&#39;tram&#39;, 780, 20),
+ (&#39;tram&#39;, 390, 18),
+ (&#39;walk&#39;, 195, 16),
+ (&#39;tram&#39;, 194, 15),
+ (&#39;walk&#39;, 97, 13),
+ (&#39;tram&#39;, 96, 12),
+ (&#39;tram&#39;, 48, 10),
+ (&#39;tram&#39;, 24, 8),
+ (&#39;tram&#39;, 12, 6),
+ (&#39;tram&#39;, 6, 4),
+ (&#39;walk&#39;, 3, 2),
+ (&#39;walk&#39;, 2, 1)]</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
 </div>
 
 
