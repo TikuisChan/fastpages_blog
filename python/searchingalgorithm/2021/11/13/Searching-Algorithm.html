@@ -249,8 +249,8 @@ window.onload = wrap_img;
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 6.65 s, sys: 18.8 ms, total: 6.67 s
-Wall time: 6.69 s
+<pre>CPU times: user 6.68 s, sys: 24.6 ms, total: 6.71 s
+Wall time: 6.74 s
 </pre>
 </div>
 </div>
@@ -356,8 +356,8 @@ Wall time: 6.69 s
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 4.49 ms, sys: 1.07 ms, total: 5.56 ms
-Wall time: 5.3 ms
+<pre>CPU times: user 4.87 ms, sys: 729 µs, total: 5.6 ms
+Wall time: 5.59 ms
 </pre>
 </div>
 </div>
@@ -413,25 +413,29 @@ Wall time: 5.3 ms
 
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="k">class</span> <span class="nc">UniformSearchFrontier</span><span class="p">:</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">operator</span> <span class="kn">import</span> <span class="n">itemgetter</span>
+
+<span class="k">class</span> <span class="nc">UniformSearchFrontier</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="p">[]</span>
         
     <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">):</span>
-        <span class="n">new_frontier</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">ps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">ps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">ns</span> <span class="o">!=</span> <span class="n">new_state</span><span class="p">:</span>
-                <span class="n">new_frontier</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">ps</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">ns</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
                 <span class="k">continue</span>
             <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">cost</span><span class="p">:</span>    <span class="c1"># if cost is larger than the cost already in frontier =&gt; do nothing</span>
-                <span class="k">return</span> 
+                <span class="k">return</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>    <span class="c1"># insert new frontier</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">))</span>
+            <span class="k">return</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">)</span>    <span class="c1"># replace frontier item with lower cost</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="n">new_frontier</span>
-
-        <span class="c1"># else pop the state from original frontier and insert new state</span>
-        <span class="n">cost_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">]</span>
-        <span class="n">insert_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">cost_list</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">[:</span><span class="n">insert_pos</span><span class="p">]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">previous_state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">cost</span><span class="p">)]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">[</span><span class="n">insert_pos</span><span class="p">:]</span>
+        <span class="c1"># insert frontier item in order (slower)</span>
+        <span class="c1"># cost_list = [x[3] for x in self.frontier]</span>
+        <span class="c1"># insert_pos = self.find_insert_index(cost, cost_list)</span>
+        <span class="c1"># self.frontier = self.frontier[:insert_pos] + [(previous_state, action, new_state, cost)] + self.frontier[insert_pos:]</span>
 
     <span class="k">def</span> <span class="nf">find_insert_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">):</span>    <span class="c1"># binary search pos</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -444,9 +448,13 @@ Wall time: 5.3 ms
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">find_insert_index</span><span class="p">(</span><span class="n">cost</span><span class="p">,</span> <span class="n">sorted_list</span><span class="p">[:</span><span class="n">index</span><span class="p">])</span>
 
+    <span class="k">def</span> <span class="nf">sort_frontier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">itemgetter</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        
     <span class="k">def</span> <span class="nf">pop_min_item</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No frontier left.&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_frontier</span><span class="p">()</span>    <span class="c1"># sort frontier when needed (faster)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">frontier</span><span class="o">.</span><span class="n">pop</span><span class="p">()</span>
 </pre></div>
 
@@ -485,6 +493,7 @@ Wall time: 5.3 ms
                 <span class="k">continue</span>
             <span class="n">frontier</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">new_state</span><span class="p">,</span> <span class="n">tot_cost</span> <span class="o">+</span> <span class="n">cost</span><span class="p">)</span>
         
+    <span class="c1"># trace action history for output</span>
     <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">s</span> <span class="o">=</span> <span class="n">problem</span><span class="o">.</span><span class="n">goal</span>
     <span class="k">while</span> <span class="n">explored</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
@@ -522,8 +531,8 @@ Wall time: 5.3 ms
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 37.4 ms, sys: 1.72 ms, total: 39.1 ms
-Wall time: 37.9 ms
+<pre>CPU times: user 24.8 ms, sys: 1.69 ms, total: 26.5 ms
+Wall time: 25.2 ms
 </pre>
 </div>
 </div>
@@ -587,8 +596,8 @@ Wall time: 37.9 ms
 <div class="output_area">
 
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>CPU times: user 2min 51s, sys: 1.35 s, total: 2min 52s
-Wall time: 2min 53s
+<pre>CPU times: user 1min 21s, sys: 204 ms, total: 1min 21s
+Wall time: 1min 21s
 </pre>
 </div>
 </div>
