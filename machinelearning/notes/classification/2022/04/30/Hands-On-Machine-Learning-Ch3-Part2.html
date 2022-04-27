@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="twitter:card" content="summary_large_image" /><!-- Begin Jekyll SEO tag v2.6.1 -->
+<title>Hands-on Machine Learning with Scikit-learn, Keras and Tensorflow - Ch3 (Part 2) | SK</title>
+<meta name="generator" content="Jekyll v4.1.1" />
+<meta property="og:title" content="Hands-on Machine Learning with Scikit-learn, Keras and Tensorflow - Ch3 (Part 2)" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Learn, Summarize and Blog" />
+<meta property="og:description" content="Learn, Summarize and Blog" />
+<link rel="canonical" href="https://tikuischan.github.io/fastpages_blog/machinelearning/notes/classification/2022/04/30/Hands-On-Machine-Learning-Ch3-Part2.html" />
+<meta property="og:url" content="https://tikuischan.github.io/fastpages_blog/machinelearning/notes/classification/2022/04/30/Hands-On-Machine-Learning-Ch3-Part2.html" />
+<meta property="og:site_name" content="SK" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2022-04-30T00:00:00-05:00" />
+<script type="application/ld+json">
+{"url":"https://tikuischan.github.io/fastpages_blog/machinelearning/notes/classification/2022/04/30/Hands-On-Machine-Learning-Ch3-Part2.html","@type":"BlogPosting","headline":"Hands-on Machine Learning with Scikit-learn, Keras and Tensorflow - Ch3 (Part 2)","dateModified":"2022-04-30T00:00:00-05:00","datePublished":"2022-04-30T00:00:00-05:00","mainEntityOfPage":{"@type":"WebPage","@id":"https://tikuischan.github.io/fastpages_blog/machinelearning/notes/classification/2022/04/30/Hands-On-Machine-Learning-Ch3-Part2.html"},"description":"Learn, Summarize and Blog","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" href="/fastpages_blog/assets/css/style.css"><link type="application/atom+xml" rel="alternate" href="https://tikuischan.github.io/fastpages_blog/feed.xml" title="SK" /><link rel="shortcut icon" type="image/x-icon" href="/fastpages_blog/images/favicon.ico"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Primer/15.2.0/primer.css" integrity="sha512-xTz2ys4coGAOz8vuV1NcQBkgVmKhsSEtjbqyMJbBHRplFuvKIUo6xhLHpAyPt9mfR6twHJgn9OgVLuqOvjeBhg==" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" integrity="sha512-1PKOgIY59xJ8Co8+NE6FZ+LOAZKjy+KY8iq0G4B3CyeY6wYHN3yt9PW0XpSriVlkMXe40PTKnXrLnZ9+fkDaog==" crossorigin="anonymous" />
+
+<script>
+function wrap_img(fn) {
+    if (document.attachEvent ? document.readyState === "complete" : document.readyState !== "loading") {
+        var elements = document.querySelectorAll(".post img");
+        Array.prototype.forEach.call(elements, function(el, i) {
+            if (el.getAttribute("title") && (el.className != "emoji")) {
+                const caption = document.createElement('figcaption');
+                var node = document.createTextNode(el.getAttribute("title"));
+                caption.appendChild(node);
+                const wrapper = document.createElement('figure');
+                wrapper.className = 'image';
+                el.parentNode.insertBefore(wrapper, el);
+                el.parentNode.removeChild(el);
+                wrapper.appendChild(el);
+                wrapper.appendChild(caption);
+            }
+        });
+    } else { document.addEventListener('DOMContentLoaded', fn); }
+}
+window.onload = wrap_img;
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(){
+    // add link icon to anchor tags
+    var elem = document.querySelectorAll(".anchor-link")
+    elem.forEach(e => (e.innerHTML = '<i class="fas fa-link fa-xs"></i>'));
+    });
+</script>
+</head>
+<body><header class="site-header">
+
+  <div class="wrapper"><a class="site-title" rel="author" href="/fastpages_blog/">SK</a><nav class="site-nav">
+        <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+        <label for="nav-trigger">
+          <span class="menu-icon">
+            <svg viewBox="0 0 18 15" width="18px" height="15px">
+              <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+            </svg>
+          </span>
+        </label>
+
+        <div class="trigger"><a class="page-link" href="/fastpages_blog/about/">Pervious Logs</a><a class="page-link" href="/fastpages_blog/search/">Search</a><a class="page-link" href="/fastpages_blog/categories/">Tags</a></div>
+      </nav></div>
+</header>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header">
+    <h1 class="post-title p-name" itemprop="name headline">Hands-on Machine Learning with Scikit-learn, Keras and Tensorflow - Ch3 (Part 2)</h1><p class="post-meta post-meta-title"><time class="dt-published" datetime="2022-04-30T00:00:00-05:00" itemprop="datePublished">
+        Apr 30, 2022
+      </time>
+       • <span class="read-time" title="Estimated read time">
+    
+    
+      2 min read
+    
+</span></p>
+
+    
+      <p class="category-tags"><i class="fas fa-tags category-tags-icon"></i></i> 
+      
+        <a class="category-tags-link" href="/fastpages_blog/categories/#MachineLearning">MachineLearning</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages_blog/categories/#Notes">Notes</a>
+        &nbsp;
+      
+        <a class="category-tags-link" href="/fastpages_blog/categories/#Classification">Classification</a>
+        
+      
+      </p>
+    
+
+    
+      
+        <div class="pb-5 d-flex flex-wrap flex-justify-end">
+          <div class="px-2">
+
+    <a href="https://github.com/TikuisChan/fastpages_blog/tree/master/_notebooks/2022-04-30-Hands-On-Machine-Learning-Ch3-Part2.ipynb" role="button" target="_blank">
+<img class="notebook-badge-image" src="/fastpages_blog/assets/badges/github.svg" alt="View On GitHub">
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://mybinder.org/v2/gh/TikuisChan/fastpages_blog/master?filepath=_notebooks%2F2022-04-30-Hands-On-Machine-Learning-Ch3-Part2.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_blog/assets/badges/binder.svg" alt="Open In Binder"/>
+    </a>
+</div>
+
+          <div class="px-2">
+    <a href="https://colab.research.google.com/github/TikuisChan/fastpages_blog/blob/master/_notebooks/2022-04-30-Hands-On-Machine-Learning-Ch3-Part2.ipynb" target="_blank">
+        <img class="notebook-badge-image" src="/fastpages_blog/assets/badges/colab.svg" alt="Open In Colab"/>
+    </a>
+</div>
+        </div>
+      </header>
+
+  <div class="post-content e-content" itemprop="articleBody">
+    <!--
+#################################################
+### THIS FILE WAS AUTOGENERATED! DO NOT EDIT! ###
+#################################################
+# file to edit: _notebooks/2022-04-30-Hands-On-Machine-Learning-Ch3-Part2.ipynb
+-->
+
+<div class="container" id="notebook-container">
+        
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">fetch_openml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">mnist</span> <span class="o">=</span> <span class="n">fetch_openml</span><span class="p">(</span><span class="s1">&#39;mnist_784&#39;</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">,</span> <span class="n">target</span> <span class="o">=</span> <span class="n">mnist</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">mnist</span><span class="o">.</span><span class="n">target</span>
+<span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:</span><span class="mi">60000</span><span class="p">],</span> <span class="n">target</span><span class="p">[:</span><span class="mi">60000</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">60000</span><span class="p">:],</span> <span class="n">target</span><span class="p">[</span><span class="mi">60000</span><span class="p">:]</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.multiclass</span> <span class="kn">import</span> <span class="n">OneVsOneClassifier</span>
+
+<span class="c1"># sometime (very rarely) we might want to train a one vs one classifier instead of one vs all classifier</span>
+<span class="n">sgd</span> <span class="o">=</span> <span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sgd_ovo</span> <span class="o">=</span> <span class="n">OneVsOneClassifier</span><span class="p">(</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">sgd</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">sgd_ovo</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="c1"># SGDClassifier will automatically stack one vs all classifier while working with multi-class</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The shape of weights of default SGD multi-class classifier is:&#39;</span><span class="p">,</span> <span class="n">sgd</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># training the classifier in a one vs one way means training &#39;1&#39; vs &#39;2&#39;, &#39;1&#39; vs &#39;3&#39;... 45 estimators</span>
+<span class="c1"># prediction will pick the label winning the most in all estimators</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;There are </span><span class="si">%d</span><span class="s1"> estimater in one vs one SGDClassifier.&#39;</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">sgd_ovo</span><span class="o">.</span><span class="n">estimators_</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">sgd_ovo</span><span class="o">.</span><span class="n">estimators_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>The shape of weights of default SGD multi-class classifier is: (10, 784)
+There are 45 estimater in one vs one SGDClassifier.
+(1, 784)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Of course some classifier like decision tree can classify multi-class in its original form (different class are different leaf in the case of decision tree).</p>
+
+</div>
+</div>
+</div>
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">x_train_scaled</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_score</span>
+
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;without scaling, the accuracy is </span><span class="si">%f</span><span class="s1"> +/- </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">result</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
+
+<span class="n">result2</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">),</span> <span class="n">x_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;accuracy&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;with scaling, the accuracy is </span><span class="si">%f</span><span class="s1"> +/- </span><span class="si">%f</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">result2</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">result2</span><span class="o">.</span><span class="n">std</span><span class="p">()))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>without scaling, the accuracy is 0.872133 +/- 0.002477
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/Users/sk/anaconda3/envs/myenv/lib/python3.7/site-packages/sklearn/linear_model/_stochastic_gradient.py:700: ConvergenceWarning: Maximum number of iteration reached before convergence. Consider increasing max_iter to improve the fit.
+  ConvergenceWarning,
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>with scaling, the accuracy is 0.897383 +/- 0.005675
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpt</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">cross_val_predict</span>
+
+
+<span class="c1"># for error analysis, confusion matrix could help us analysis which class the model perform badly</span>
+<span class="n">pred</span> <span class="o">=</span> <span class="n">cross_val_predict</span><span class="p">(</span><span class="n">sgd</span><span class="p">,</span> <span class="n">x_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">confusion</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">pred</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">confusion</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+    
+    
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">num_class</span> <span class="o">=</span> <span class="n">confusion</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cm_norm</span> <span class="o">=</span> <span class="n">confusion</span> <span class="o">/</span> <span class="n">num_class</span>
+
+<span class="n">np</span><span class="o">.</span><span class="n">fill_diagonal</span><span class="p">(</span><span class="n">cm_norm</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">matshow</span><span class="p">(</span><span class="n">cm_norm</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">,</span> <span class="n">fignum</span><span class="o">=</span><span class="n">fig</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+<div class="output_area">
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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d7siAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJglBABMEqIABglRACMEiIARgkRAKOECIBRQgTAKCECYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJglBABMEqIABglRACMEiIARgkRAKOECIBR1d0rP+jW1lYfPnx45cddhdOnT09PWOi6666bnrDQT37yk+kJC11//fXTExZ6wQteMD3hsh566KHpCQsdOLB3v05+1ateNT1hoS996UvTExbq7rrU+/fu7zQAG0GIABglRACMEiIARgkRAKOECIBRQgTAKCECYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwKilQlRVv1lVx6rqG1X1SFXt3ZtxALCvbC/5cR9O8rnu/uOqOpjk0Bo3AbBBrhiiqnpuktcl+ZMk6e4zSc6sdxYAm2KZp+ZuTfJkkn+oqq9U1T1VtTfvAw7AvrNMiLaT3J7k77r75Un+K8n7fv2DquruqjpeVce7e8UzAbhaLROiR5M82t3377x9LBfD9H9099HuPtLdR6pqlRsBuIpdMUTd/USSE1X1kp13vT7Jw2tdBcDGWPZVc3+e5OM7r5j7bpJ3r28SAJtkqRB191eTHFnvFAA2kZ+sAMAoIQJglBABMEqIABglRACMEiIARgkRAKOECIBRQgTAKCECYJQQATBKiAAYJUQAjBIiAEYtez+ip6W7c/bs2XUc+hm7cOHC9ISFtra2picsdN11101PWGgvn7dvfetb0xMuay/fTXkv/1l9znOeMz1hobvuumt6wiXdd999Cx9zRQTAKCECYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJglBABMEqIABglRACMEiIARgkRAKOECIBRQgTAKCECYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGVXev/KAHDhzogwcPrvy4q/D85z9/esJCv/jFL6YnLLSXz9vDDz88PWGh1772tdMTLuuBBx6YnrDQ6dOnpycsdO7cuekJC914443TEy7ppz/9ac6ePVuXeswVEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJglBABMEqIABglRACMWipEVfVXVfVQVX29qj5RVc9e9zAANsMVQ1RVNyX5iyRHuvv3kmwledu6hwGwGZZ9am47ybVVtZ3kUJLH1zcJgE1yxRB192NJPpjk+0l+kORkd39+3cMA2AzLPDV3fZI3J7k1yW8nOVxV77jEx91dVcer6nh3r34pAFelZZ6ae0OS73X3k919Nsmnkrz61z+ou49295HuPlJVq94JwFVqmRB9P8krq+pQXSzM65M8st5ZAGyKZb5HdH+SY0keTPK1nf/n6Jp3AbAhtpf5oO7+QJIPrHkLABvIT1YAYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo2odt/Xe2trqa6+9duXHXYXz589PT1hoe3upu3KMuOGGG6YnLHTjjTdOT1joO9/5zvSEyzp58uT0hIXe8pa3TE9Y6F3vetf0hIXe+ta3Tk9YqLsveftuV0QAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJglBABMEqIABglRACMEiIARgkRAKOECIBRQgTAKCECYJQQATBKiAAYJUQAjBIiAEYJEQCjhAiAUUIEwCghAmCUEAEwSogAGCVEAIwSIgBGCREAo4QIgFFCBMAoIQJgVHX36g9a9WSS/1jR4W5M8sMVHWuTOG+747ztjvO2e5ty7n6nu3/rUg+sJUSrVFXHu/vI9I79xnnbHedtd5y33XPuPDUHwDAhAmDUfgjR0ekB+5TztjvO2+44b7u38eduz3+PCICr2364IgLgKiZEAIwSIgBGCREAo4QIgFH/DYkuyeNqFdZfAAAAAElFTkSuQmCC
+" />
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+    
+
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Now we can see that the model tends to mis-classify other sample as '8', while for the real '8's actually the model preforming okay. To improve the model, we can, for example, gather more samples looks like '8' or introducing new features helping the identify a non-'8' figure.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered"><div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="Multilabel-Classification">Multilabel Classification<a class="anchor-link" href="#Multilabel-Classification"> </a></h2><p>Sometimes our task is not just identify the letter of the hand-written number, for example to identify multi-person's face in the picture, or to classify what topics a paragraph is about, in which the authors put the task as "multilabel" classification. In practice a simple solution is training one to all model for each label, and replace the picking the highest predict_proba to a threshold, and put the label on if the probability is higher than the threshold.</p>
+
+</div>
+</div>
+</div>
+</div>
+
+
+
+  </div><a class="u-url" href="/fastpages_blog/machinelearning/notes/classification/2022/04/30/Hands-On-Machine-Learning-Ch3-Part2.html" hidden></a>
+</article>
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/fastpages_blog/"></data>
+
+  <div class="wrapper">
+
+    <div class="footer-col-wrapper">
+      <div class="footer-col">
+        <p class="feed-subscribe">
+          <a href="/fastpages_blog/feed.xml">
+            <svg class="svg-icon orange">
+              <use xlink:href="/fastpages_blog/assets/minima-social-icons.svg#rss"></use>
+            </svg><span>Subscribe</span>
+          </a>
+        </p>
+      </div>
+      <div class="footer-col">
+        <p>Learn, Summarize and Blog</p>
+      </div>
+    </div>
+
+    <div class="social-links"><ul class="social-media-list"><li><a rel="me" href="https://github.com/TikuisChan" target="_blank" title="TikuisChan"><svg class="svg-icon grey"><use xlink:href="/fastpages_blog/assets/minima-social-icons.svg#github"></use></svg></a></li></ul>
+</div>
+
+  </div>
+
+</footer>
+</body>
+
+</html>
